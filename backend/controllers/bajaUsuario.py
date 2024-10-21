@@ -2,7 +2,8 @@ from flask import Blueprint, request
 from schemas.user_schema import userUnsuscribe
 from modelsDb.model_usuario import Usuario
 from modelsDb import conexion
-from marshmallow import validationError
+from modelsDb.conexion import session
+
 
 
 bajaUser= Blueprint('bajaUser', __name__, url_prefix='/bajaUser')
@@ -10,15 +11,15 @@ bajaUser= Blueprint('bajaUser', __name__, url_prefix='/bajaUser')
 @bajaUser.post("/bajaUsuario")
 def bajaUsuario():
     try:
-        email=request.json("email")
+        email=request.json.get("email")
 
         user={"email": email}
-        userValidation=userUnsuscribe().load(user)
-        userVal=Usuario(email=userValidation['email'])
+        #userValidation=userUnsuscribe().load(user)
+        usuario=session.query(Usuario).filter_by(email=email).first()
 
-        if userVal:
+        if usuario:
        
-            conexion.session.delete(userVal)
+            conexion.session.delete(usuario)
             conexion.session.commit()
             return(f'{email} eliminado')
         else:

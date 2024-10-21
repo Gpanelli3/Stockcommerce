@@ -1,13 +1,13 @@
 from flask import Blueprint, request
 from modelsDb.model_usuario import Usuario
 from schemas.user_schema import userRegisterSchema
-from marshmallow import validationError
+from marshmallow import ValidationError
 
 from modelsDb import conexion
 
-apiUser= Blueprint('usertest', __name__, url_prefix='/usertest')
+apiUser= Blueprint('signUp', __name__, url_prefix='/signUp')
 
-@apiUser.post('/prueba')
+@apiUser.post('/registroUsuario')
 def testUser():
     try:
         email = request.json['email']
