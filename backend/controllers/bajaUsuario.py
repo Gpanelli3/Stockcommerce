@@ -21,6 +21,7 @@ def bajaUsuario():
        
             conexion.session.delete(usuario)
             conexion.session.commit()
+            print("none")
             return(f'{email} eliminado')
         else:
             return (f'usuario {email} no encontrado')
