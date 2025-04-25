@@ -3,8 +3,9 @@ import "../App.css";
 
 function SignUp() {
   const [state, setState] = useState({
-    email: "",
-    password: "",
+    nombre: "",
+    dni: "",
+    telefono: "",
   });
 
   const inputChange = (e) => {
@@ -21,6 +22,7 @@ function SignUp() {
     const data = {
       email: state.email,
       password: state.password,
+      telefono: state.telefono,
     };
     console.log(data);
 
@@ -39,24 +41,32 @@ function SignUp() {
   return (
     <>
       <form onSubmit={submit} className="formulario">
-        <h2>Registro de usuario</h2>
-        <label htmlFor="email">Email</label>
+        <h2>Registro de clientes</h2>
+        <label htmlFor="email">Nombre</label>
         <input
-          id="email"
-          name="email"
-          type="email"
-          value={state.email} // Usar state en lugar de values
+          id="nombre"
+          name="nombre"
+          type="text"
+          value={state.nombre} // Usar state en lugar de values
           onChange={inputChange}
         />
-        <label htmlFor="password">Password</label>
+        <label htmlFor="dni">Dni</label>
         <input
-          id="password"
-          name="password"
-          type="password"
-          value={state.password} // Usar state en lugar de values
+          id="dni"
+          name="dni"
+          type="number"
+          value={state.dni} // Usar state en lugar de values
           onChange={inputChange}
         />
-        <button type="submit">Sign Up</button>
+        <label htmlFor="telefono">telefono</label>
+        <input
+          id="telefono"
+          name="telefono"
+          type="number"
+          value={state.telefono} // Usar state en lugar de values
+          onChange={inputChange}
+        />
+        <button type="submit">Registrarse</button>
       </form>
     </>
   );

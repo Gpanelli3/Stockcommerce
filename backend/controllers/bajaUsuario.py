@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from schemas.user_schema import userUnsuscribe
-from modelsDb.model_usuario import Usuario
+from stockstorage.backend.modelsDb.model_cliente import Usuario
 from modelsDb import conexion
 from modelsDb.conexion import session
 
