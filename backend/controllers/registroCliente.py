@@ -11,7 +11,7 @@ session=Session()
 
 registro= Blueprint('registroCliente', __name__, url_prefix='/registroCliente')
 
-@registro.post('/registroCliente')
+@registro.post('/')
 def registroCliente():
     try:
         nombre = request.json['nombre']
@@ -25,7 +25,7 @@ def registroCliente():
         #userValidation= userRegisterSchema().load(newUser)
         #userValidado= Cliente(email=userValidation['email'], password=userValidation['password'])
 
-        nuevoUsuario=Cliente(nombre=['nombre'], dni=['dni'], telefono=['telefono'])
+        nuevoUsuario=Cliente( nombre=nombre, dni=dni, telefono=telefono)
         conexion.session.add(nuevoUsuario)
         conexion.session.commit()
         return (f'{nombre} cargado')

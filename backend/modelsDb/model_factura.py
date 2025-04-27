@@ -2,7 +2,7 @@ from modelsDb import conexion
 from sqlalchemy import Column, Integer, String, Date
 
 class Factura(conexion.Base):
-    __table_name__='factura'
+    __tablename__='factura'
 
     nroFactura= Column(Integer, autoincrement=True, primary_key=True)
     id_cliente=Column(Integer,nullable=False) #aca va la relacion con cliente

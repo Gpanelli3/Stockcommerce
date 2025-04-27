@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer
 
 class DetalleFactura(conexion.Base):
      
-     __table_name__='detalle_Factura'
+     __tablename__='detalle_Factura'
      
      idDetalle= Column(Integer, autoincrement=True, primary_key=True)
      cantidad=Column(Integer, nullable=False )
