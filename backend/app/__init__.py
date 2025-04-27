@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from backend.modelsDb import conexion
-from backend.controllers.registroCliente import registro
+from modelsDb import conexion
 
 def create_app():
     app=Flask(__name__)

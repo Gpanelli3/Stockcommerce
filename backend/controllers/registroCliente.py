@@ -3,9 +3,9 @@ from flask import Blueprint, request
 #from schemas.user_schema import userRegisterSchema
 from marshmallow import ValidationError
 
-from backend.modelsDb import conexion
-from backend.modelsDb.conexion import Session
-from backend.modelsDb.model_cliente import Cliente
+from modelsDb import conexion
+from modelsDb.conexion import Session
+from modelsDb.model_cliente import Cliente
 
 session=Session()
 

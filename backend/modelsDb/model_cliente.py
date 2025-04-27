@@ -1,6 +1,6 @@
-from backend.modelsDb import conexion
-import conexion
-from conexion import Session
+from modelsDb import conexion
+#import conexion
+from modelsDb.conexion import Session
 from sqlalchemy import Column, Integer, String
 
 class Cliente(conexion.Base):
@@ -17,8 +17,8 @@ class Cliente(conexion.Base):
         self.dni=dni
         self.telefono=telefono
 
-session=Session()
-usuarios=session.query(Cliente).all()
+#session=Session()
+#usuarios=session.query(Cliente).all()
 
-for u in usuarios:
-    print(u.nombre, u.dni, u.telefono)
+#for u in usuarios:
+ #   print(u.nombre, u.dni, u.telefono)
