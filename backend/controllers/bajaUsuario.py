@@ -6,7 +6,7 @@ from modelsDb.conexion import session
 
 
 
-bajaUser= Blueprint('bajaUser', __name__, url_prefix='/bajaUser')
+bajaUser= Blueprint('bajaUsuario', __name__, url_prefix='/bajaUsuario')
 
 @bajaUser.post("/bajaUsuario")
 def bajaUsuario():

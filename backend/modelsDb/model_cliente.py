@@ -1,3 +1,4 @@
+from backend.modelsDb import conexion
 import conexion
 from conexion import Session
 from sqlalchemy import Column, Integer, String

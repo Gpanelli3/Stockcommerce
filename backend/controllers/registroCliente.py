@@ -1,17 +1,18 @@
 from flask import Blueprint, request
-from modelsDb.model_cliente import Cliente
-from schemas.user_schema import userRegisterSchema
+
+#from schemas.user_schema import userRegisterSchema
 from marshmallow import ValidationError
 
-from modelsDb import conexion
-from modelsDb.conexion import Session
+from backend.modelsDb import conexion
+from backend.modelsDb.conexion import Session
+from backend.modelsDb.model_cliente import Cliente
 
 session=Session()
 
-apiUser= Blueprint('signUp', __name__, url_prefix='/signUp')
+registro= Blueprint('registroCliente', __name__, url_prefix='/registroCliente')
 
-@apiUser.post('/registroCliente')
-def testUser():
+@registro.post('/registroCliente')
+def registroCliente():
     try:
         nombre = request.json['nombre']
         dni = request.json['dni']
@@ -24,7 +25,8 @@ def testUser():
         #userValidation= userRegisterSchema().load(newUser)
         #userValidado= Cliente(email=userValidation['email'], password=userValidation['password'])
 
-        conexion.session.add(newUser)
+        nuevoUsuario=Cliente(nombre=['nombre'], dni=['dni'], telefono=['telefono'])
+        conexion.session.add(nuevoUsuario)
         conexion.session.commit()
         return (f'{nombre} cargado')
 
