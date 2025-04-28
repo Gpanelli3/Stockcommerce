@@ -31,8 +31,11 @@ def ventasProductos():
     select(Stock).where(Stock.id_producto.in_(ids_productos))
     ).scalars().all()
 
+    print(productos_vendidos)
+
       # Calcular total
     total_sin_descuento = sum(p.precio_venta for p in productos_vendidos)
+
     total = total_sin_descuento - (total_sin_descuento * descuento / 100)
 
      # Crear la factura
@@ -66,21 +69,23 @@ def ventasProductos():
         # Crear un objeto DetalleFactura
         detalle = DetalleFactura(
             facturaId=factura_id,
-            id_producto=producto.id_producto,
+            id_productos=producto.id_producto,
             cantidad=cantidad_vendida,
             subtotal=subtotal
             )
         detalles.append(detalle)  # Agregar al listado de detalles
 
         total += subtotal  # Acumular en el total de la factura
-        print(detalle.facturaId, detalle.id_producto, detalle.cantidad, detalle.subtotal)
-    
 
 
     # Agregar los detalles de la factura a la base de datos
-    for detalle in detalles:
-        conexion.session.add(detalle)
-    conexion.session.commit()
+    try:
+        for detalle in detalles:
+            conexion.session.add(detalle)
+        conexion.session.commit()
+    except Exception as e:
+        conexion.session.rollback()
+        print(f"Error al guardar detalles: {e}")
 
     return f'Factura {nueva_factura.nro_factura} cargada en el sistema con {len(detalles)} productos.'
 
