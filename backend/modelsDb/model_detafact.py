@@ -6,14 +6,8 @@ class DetalleFactura(conexion.Base):
      __tablename__='detalle_Factura'
      
      idDetalle= Column(Integer, autoincrement=True, primary_key=True)
+     facturaId= Column(Integer)#clave foranea con factura
+     id_producto= Column(Integer)#clave foranea productos
      cantidad=Column(Integer, nullable=False )
-     total=Column(Integer, nullable=False )
-     facturaID= Column(Integer)#clave foranea con factura
-     idProductos= Column(Integer)#clave foranea productos
+     subtotal=Column(Integer, nullable=False )
    
-     def __init__(self,idDetalle,cantidad,total,facturaId,idProductos):
-         self.idDetalle=idDetalle
-         self.cantidad=cantidad
-         self.facturaID=facturaId
-         self.idProductos=idProductos
-         self.total=total
