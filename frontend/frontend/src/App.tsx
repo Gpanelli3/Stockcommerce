@@ -247,7 +247,7 @@ function ProductForm() {
     try {
       // Here you would add your endpoint URL
       const response = await fetch(
-        "http://127.0.0.1:5000/apimain/ingresoProductos",
+        "http://127.0.0.1:5000/apimain/ingresoProductos/",
         {
           method: "POST",
           headers: {

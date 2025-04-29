@@ -11,7 +11,6 @@ session=Session()
 
 
 productos=Blueprint("ingresoProductos", __name__, url_prefix="/ingresoProductos")
-
 @productos.post("/")
 def ingresoProductos():
 
