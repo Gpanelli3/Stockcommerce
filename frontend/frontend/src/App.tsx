@@ -10,7 +10,7 @@ interface ProductFormData {
   costPrice: number;
   salePrice: number;
 }
-// New interface for client data
+
 interface ClientFormData {
   name: string;
   dni: string;
@@ -129,7 +129,7 @@ function HomePage() {
   );
 }
 
-// Client Registration Page
+// registro cliente
 function ClientRegistration() {
   const [formData, setFormData] = useState<ClientFormData>({
     name: "",
@@ -230,6 +230,7 @@ function ClientRegistration() {
     </div>
   );
 }
+//registro productos
 
 function ProductForm() {
   const [formData, setFormData] = useState<ProductFormData>({
@@ -412,7 +413,7 @@ function ProductCard({ image, name, price }: ProductCardProps) {
   );
 }
 
-// Main App component with routing
+// Routing
 function App() {
   return (
     <Routes>

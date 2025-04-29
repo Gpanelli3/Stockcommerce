@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 
 #from schemas.user_schema import userRegisterSchema
 from marshmallow import ValidationError
@@ -10,7 +10,7 @@ from modelsDb.model_stock import Stock
 session=Session()
 
 
-productos=Blueprint("ingresoProductos", __name__, url_prefix="ingresoProductos")
+productos=Blueprint("ingresoProductos", __name__, url_prefix="/ingresoProductos")
 
 @productos.post("/")
 def ingresoProductos():
