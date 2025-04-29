@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_cors import CORS, cross_origin
 
 #from schemas.user_schema import userRegisterSchema
 from marshmallow import ValidationError
@@ -6,7 +7,6 @@ from marshmallow import ValidationError
 from modelsDb import conexion
 from modelsDb.conexion import Session
 from modelsDb.model_stock import Stock
-
 session=Session()
 
 
@@ -14,9 +14,6 @@ productos=Blueprint("ingresoProductos", __name__, url_prefix="/ingresoProductos"
 
 @productos.post("/")
 def ingresoProductos():
-    if request.method == "OPTIONS":
-        # Responde correctamente a la solicitud OPTIONS sin redirección
-        return '', 200  # OK con respuesta vacía
 
     try:
         nombre=request.json["name"]
@@ -34,6 +31,6 @@ def ingresoProductos():
 
     except ValidationError as badValidation:
         print(f"error {badValidation}")
-
+        return jsonify({"error": "Error de validación", "detalle": str(badValidation)}), 400
 
 
