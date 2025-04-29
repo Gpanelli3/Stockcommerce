@@ -31,7 +31,9 @@ def ventasProductos():
     select(Stock).where(Stock.id_producto.in_(ids_productos))
     ).scalars().all()
 
-    print(productos_vendidos)
+    # Suponiendo que Stock tiene un atributo como 'nombre' y 'cantidad'
+    for producto in productos_vendidos:
+        print(f"Producto ID: {producto.id_producto}, Nombre: {producto.nombre}, Cantidad: {producto.cantidad}")
 
       # Calcular total
     total_sin_descuento = sum(p.precio_venta for p in productos_vendidos)

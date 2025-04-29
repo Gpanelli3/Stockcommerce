@@ -14,13 +14,17 @@ productos=Blueprint("ingresoProductos", __name__, url_prefix="ingresoProductos")
 
 @productos.post("/")
 def ingresoProductos():
+    if request.method == "OPTIONS":
+        # Responde correctamente a la solicitud OPTIONS sin redirección
+        return '', 200  # OK con respuesta vacía
+
     try:
-        nombre=request.json["nombre"]
-        proveedor=request.json["proveedor"]
-        categoria=request.json["categoria"]
-        cantidad=request.json["cantidad"]
-        precio_costo=request.json["precio_costo"]
-        precio_venta=request.json["precio_venta"]
+        nombre=request.json["name"]
+        proveedor=request.json["supplier"]
+        categoria=request.json["category"]
+        cantidad=request.json["quantity"]
+        precio_costo=request.json["costPrice"]
+        precio_venta=request.json["salePrice"]
 
         producto=Stock(nombre=nombre,cantidad=cantidad,precio_costo=precio_costo,precio_venta=precio_venta,categoria=categoria, id_proveedor=proveedor)
         conexion.session.add(producto)
