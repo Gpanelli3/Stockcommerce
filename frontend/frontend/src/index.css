@@ -53,6 +53,13 @@ body {
   margin: 0 auto 32px;
 }
 
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
 .hero-button {
   background-color: #9333ea;
   color: white;
@@ -63,10 +70,22 @@ body {
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .hero-button:hover {
   background-color: #7e22ce;
+}
+
+.hero-button.register-client {
+  background-color: #2563eb;
+}
+
+.hero-button.register-client:hover {
+  background-color: #1d4ed8;
 }
 
 /* Product Management Section */
@@ -274,4 +293,46 @@ body {
 .product-price {
   color: #9333ea;
   font-weight: bold;
+}
+
+/* Client Registration Styles */
+.client-registration {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #f0f7ff, #f3f0ff);
+  padding: 64px 24px;
+}
+
+.registration-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  display: inline-block;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.back-button:hover {
+  color: #9333ea;
+}
+
+.registration-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

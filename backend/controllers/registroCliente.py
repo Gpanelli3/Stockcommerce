@@ -14,9 +14,9 @@ registro= Blueprint('registroCliente', __name__, url_prefix='/registroCliente')
 @registro.post('/')
 def registroCliente():
     try:
-        nombre = request.json['nombre']
+        nombre = request.json['name']
         dni = request.json['dni']
-        telefono= request.json['telefono']
+        telefono= request.json['phone']
         newUser = {
             "nombre": nombre,
             "dni": dni,

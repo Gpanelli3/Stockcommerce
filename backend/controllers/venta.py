@@ -92,14 +92,16 @@ def ventasProductos():
     return f'Factura {nueva_factura.nro_factura} cargada en el sistema con {len(detalles)} productos.'
 
 
-    #ejemplo de datos desde el frontend
-    #{
-    #"cliente_id": 3,
-    #"idsProductos":[5,5,21,21],
-    #"productos": {
-    #    "5":2,
-    #    "21":2
-    #},
-    #"descripcion": "2 cocas y 2 fernet",
-    #"medio_de_pago": "efectivo",
-    #"descuento": 0
+#     {
+#     "cliente_id": 12,
+#     "idsProductos":[4,7],
+#     "productos": {
+#         "4":2,
+#         "7":1
+#     },
+#     "descripcion": "dos manaos y un hielo",
+#     "medio_de_pago": "efectivo",
+#     "descuento": 0
+
+
+# }

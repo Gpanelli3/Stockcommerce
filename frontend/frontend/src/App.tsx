@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { GlassWater, Wine, Beer, Coffee, Plus } from "lucide-react";
+import { Routes, Route, Link } from "react-router-dom";
+import { GlassWater, Wine, Beer, Coffee, Plus, UserPlus } from "lucide-react";
 
 interface ProductFormData {
   name: string;
@@ -9,8 +10,25 @@ interface ProductFormData {
   costPrice: number;
   salePrice: number;
 }
+// New interface for client data
+interface ClientFormData {
+  name: string;
+  dni: string;
+  phone: string;
+}
 
-function App() {
+interface CategoryCardProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}
+interface ProductCardProps {
+  image: string;
+  name: string;
+  price: string;
+}
+
+function HomePage() {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -31,7 +49,13 @@ function App() {
             refrescantes aguas minerales hasta los más finos vinos y cervezas
             artesanales.
           </p>
-          <button className="hero-button">Explorar Catálogo</button>
+          <div className="hero-buttons">
+            <button className="hero-button">Explorar Catálogo</button>
+            <Link to="/register-client" className="hero-button register-client">
+              <UserPlus size={20} />
+              Registrar Cliente
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -105,6 +129,108 @@ function App() {
   );
 }
 
+// Client Registration Page
+function ClientRegistration() {
+  const [formData, setFormData] = useState<ClientFormData>({
+    name: "",
+    dni: "",
+    phone: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Here you would add your endpoint URL
+      const response = await fetch(
+        "http://127.0.0.1:5000/apimain/registroCliente",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al registrar el cliente");
+      }
+
+      // Reset form after successful submission
+      setFormData({
+        name: "",
+        dni: "",
+        phone: "",
+      });
+
+      alert("Cliente registrado exitosamente");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al registrar el cliente");
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  return (
+    <div className="client-registration">
+      <div className="registration-container">
+        <Link to="/" className="back-button">
+          Volver al inicio
+        </Link>
+        <h2 className="registration-title">Registro de Cliente Nuevo</h2>
+        <form className="registration-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Nombre Completo</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="dni">DNI</label>
+            <input
+              type="text"
+              id="dni"
+              name="dni"
+              value={formData.dni}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="phone">Teléfono</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="submit-button">
+            Registrar Cliente
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function ProductForm() {
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
@@ -119,13 +245,17 @@ function ProductForm() {
     e.preventDefault();
     try {
       // Here you would add your endpoint URL
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:5000/apimain/ingresoProductos",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Error al guardar el producto");
@@ -197,18 +327,23 @@ function ProductForm() {
           required
         >
           <option value="">Seleccionar categoría</option>
-          <option value="vino">Vino</option>
-          <option value="cerveza">Cerveza</option>
-          <option value="agua">Agua</option>
-          <option value="cafe">Café</option>
-          <option value="te">Té</option>
+          <option value="1">Alchool +50%</option>
+          <option value="2">Gaseosa</option>
+          <option value="3">Bebidas energizantes</option>
+          <option value="4">Cerveza</option>
+          <option value="5">Jugos</option>
+          <option value="6">Cigarrillos</option>
+          <option value="7">Papas fritas</option>
+          <option value="8">Golosinas</option>
+          <option value="9">Aguas</option>
+          <option value="10">Vinos</option>
         </select>
       </div>
 
       <div className="form-group">
         <label htmlFor="quantity">Cantidad</label>
         <input
-          type="number"
+          type="text"
           id="quantity"
           name="quantity"
           value={formData.quantity}
@@ -221,7 +356,7 @@ function ProductForm() {
       <div className="form-group">
         <label htmlFor="costPrice">Precio Costo</label>
         <input
-          type="number"
+          type="text"
           id="costPrice"
           name="costPrice"
           value={formData.costPrice}
@@ -235,7 +370,7 @@ function ProductForm() {
       <div className="form-group">
         <label htmlFor="salePrice">Precio Venta</label>
         <input
-          type="number"
+          type="text"
           id="salePrice"
           name="salePrice"
           value={formData.salePrice}
@@ -253,12 +388,6 @@ function ProductForm() {
   );
 }
 
-interface CategoryCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
-
 function CategoryCard({ icon, title, description }: CategoryCardProps) {
   return (
     <div className="category-card">
@@ -267,12 +396,6 @@ function CategoryCard({ icon, title, description }: CategoryCardProps) {
       <p className="category-description">{description}</p>
     </div>
   );
-}
-
-interface ProductCardProps {
-  image: string;
-  name: string;
-  price: string;
 }
 
 function ProductCard({ image, name, price }: ProductCardProps) {
@@ -286,6 +409,16 @@ function ProductCard({ image, name, price }: ProductCardProps) {
         <p className="product-price">{price}</p>
       </div>
     </div>
+  );
+}
+
+// Main App component with routing
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/register-client" element={<ClientRegistration />} />
+    </Routes>
   );
 }
 
