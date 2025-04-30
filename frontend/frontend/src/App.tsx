@@ -27,6 +27,261 @@ interface ProductCardProps {
   name: string;
   price: string;
 }
+// New interfaces for sales
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+}
+
+interface SaleItem {
+  product: Product;
+  quantity: number;
+}
+
+interface Client {
+  id: string;
+  name: string;
+  dni: string;
+}
+
+interface SaleFormData {
+  client: Client | null;
+  items: SaleItem[];
+  description: string;
+  paymentMethod: string;
+  discount: number;
+}
+// Sales Page Component
+function SalesPage() {
+  const [formData, setFormData] = useState<SaleFormData>({
+    client: null,
+    items: [],
+    description: "",
+    paymentMethod: "efectivo",
+    discount: 0,
+  });
+
+  const [clients, setClients] = useState<Client[]>([
+    { id: "1", name: "Juan Pérez", dni: "12345678" },
+    { id: "2", name: "María García", dni: "87654321" },
+  ]);
+
+  const [products, setProducts] = useState<Product[]>([
+    { id: "1", name: "Vino Malbec", price: 2500, stock: 50 },
+    { id: "2", name: "Cerveza IPA", price: 800, stock: 100 },
+    { id: "3", name: "Agua Mineral", price: 300, stock: 200 },
+  ]);
+
+  const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedClient = clients.find((c) => c.id === e.target.value);
+    setFormData((prev) => ({ ...prev, client: selectedClient || null }));
+  };
+
+  const handleAddProduct = (productId: string, quantity: number) => {
+    const product = products.find((p) => p.id === productId);
+    if (!product || quantity <= 0) return;
+
+    setFormData((prev) => {
+      const existingItem = prev.items.find(
+        (item) => item.product.id === productId
+      );
+      if (existingItem) {
+        return {
+          ...prev,
+          items: prev.items.map((item) =>
+            item.product.id === productId
+              ? { ...item, quantity: item.quantity + quantity }
+              : item
+          ),
+        };
+      }
+      return {
+        ...prev,
+        items: [...prev.items, { product, quantity }],
+      };
+    });
+  };
+
+  const handleRemoveProduct = (productId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      items: prev.items.filter((item) => item.product.id !== productId),
+    }));
+  };
+
+  const calculateTotal = () => {
+    const subtotal = formData.items.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
+    const discount = subtotal * (formData.discount / 100);
+    return subtotal - discount;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/sales", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al procesar la venta");
+      }
+
+      setFormData({
+        client: null,
+        items: [],
+        description: "",
+        paymentMethod: "efectivo",
+        discount: 0,
+      });
+
+      alert("Venta procesada exitosamente");
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al procesar la venta");
+    }
+  };
+
+  return (
+    <div className="sales-page">
+      <div className="sales-container">
+        <Link to="/" className="back-button">
+          Volver al inicio
+        </Link>
+        <h2 className="sales-title">Nueva Venta</h2>
+
+        <form className="sales-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="client">Cliente</label>
+            <select
+              id="client"
+              value={formData.client?.id || ""}
+              onChange={handleClientChange}
+              required
+            >
+              <option value="">Seleccionar cliente</option>
+              {clients.map((client) => (
+                <option key={client.id} value={client.id}>
+                  {client.name} - DNI: {client.dni}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Productos</label>
+            <div className="products-selection">
+              {products.map((product) => (
+                <div key={product.id} className="product-selection-item">
+                  <span>
+                    {product.name} - ${product.price}
+                  </span>
+                  <div className="product-actions">
+                    <input
+                      type="number"
+                      min="1"
+                      max={product.stock}
+                      placeholder="Cantidad"
+                      onChange={(e) =>
+                        handleAddProduct(product.id, parseInt(e.target.value))
+                      }
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="selected-products">
+            <h3>Productos Seleccionados</h3>
+            {formData.items.map((item) => (
+              <div key={item.product.id} className="selected-product-item">
+                <span>
+                  {item.product.name} x {item.quantity}
+                </span>
+                <span>${item.product.price * item.quantity}</span>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveProduct(item.product.id)}
+                  className="remove-button"
+                >
+                  Eliminar
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Descripción</label>
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+              rows={3}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="paymentMethod">Medio de Pago</label>
+            <select
+              id="paymentMethod"
+              value={formData.paymentMethod}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  paymentMethod: e.target.value,
+                }))
+              }
+              required
+            >
+              <option value="efectivo">Efectivo</option>
+              <option value="tarjeta">Tarjeta de Crédito</option>
+              <option value="transferencia">Transferencia Bancaria</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="discount">Descuento (%)</label>
+            <input
+              type="number"
+              id="discount"
+              min="0"
+              max="100"
+              value={formData.discount}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  discount: parseInt(e.target.value) || 0,
+                }))
+              }
+            />
+          </div>
+
+          <div className="sale-total">
+            <h3>Total: ${calculateTotal()}</h3>
+          </div>
+
+          <button type="submit" className="submit-button">
+            Procesar Venta
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 function HomePage() {
   const [showForm, setShowForm] = useState(false);
@@ -54,6 +309,10 @@ function HomePage() {
             <Link to="/register-client" className="hero-button register-client">
               <UserPlus size={20} />
               Registrar Cliente
+            </Link>
+            <Link to="/sales" className="hero-button sales">
+              <ShoppingCart size={20} />
+              Nueva Venta
             </Link>
           </div>
         </div>
@@ -142,7 +401,7 @@ function ClientRegistration() {
     try {
       // Here you would add your endpoint URL
       const response = await fetch(
-        "http://127.0.0.1:5000/apimain/registroCliente",
+        "http://127.0.0.1:5000/apimain/registroCliente/",
         {
           method: "POST",
           headers: {
@@ -419,6 +678,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/register-client" element={<ClientRegistration />} />
+      <Route path="/sales" element={<SalesPage />} />
     </Routes>
   );
 }
