@@ -48,11 +48,6 @@ interface SaleItem {
   quantity: number;
 }
 
-interface Client {
-  id: number;
-  nombre: string;
-}
-
 interface SaleFormData {
   client: Client | null;
   items: SaleItem[];
@@ -69,20 +64,24 @@ function SalesPage() {
     paymentMethod: "efectivo",
     discount: 0,
   });
+  interface Client {
+    id: number;
+    nombre: string;
+  }
 
   const [clients, setClients] = useState<Client[]>([]);
   useEffect(() => {
     fetch("http://127.0.0.1:5000/apimain/usuarios")
-      .then((response) => response.json())
-      .then((json) => setClients(json))
-      .catch((error) => console.log("error", error));
+      .then((res) => res.json())
+      .then((data) => setClients(data))
+      .catch((error) => console.log("Error al cargar clientes:", error));
   }, []);
+
   console.log(clients);
+
   const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedClient = clients.find(
-      (c: Client) => c.id === Number(e.target.value)
-    );
-    setFormData((prev) => ({ ...prev, client: selectedClient || null }));
+    const selectedId = parseInt(e.target.value, 10);
+    setFormData((prev) => ({ ...prev, client: selectedId }));
   };
 
   const [products, setProducts] = useState<Product[]>([
@@ -177,7 +176,7 @@ function SalesPage() {
             <label htmlFor="client">Cliente</label>
             <select
               id="client"
-              value={formData.client || ""}
+              value={formData.client}
               onChange={handleClientChange}
               required
             >

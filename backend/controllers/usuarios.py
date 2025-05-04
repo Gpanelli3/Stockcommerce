@@ -12,16 +12,13 @@ session=Session()
 @usuarios.get("/")
 def usuarios_consulta():
     try:
-        nombres=session.query(Cliente.nombre).all()
-        solo_nombres = [n[0] for n in nombres]
-        print(jsonify(solo_nombres))
-        return jsonify(solo_nombres)
-
+        clientes = session.query(Cliente.cliente_id, Cliente.nombre).all()
+        lista_clientes = [{"id": id, "nombre": nombre} for id, nombre in clientes]
+        return jsonify(lista_clientes)
 
     except ValidationError as badValidation:
         print(f"error {badValidation}")
-
-        return "error"
+        return "error", 400
 
 
 
