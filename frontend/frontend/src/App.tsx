@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import {
   GlassWater,
@@ -49,9 +49,8 @@ interface SaleItem {
 }
 
 interface Client {
-  id: string;
-  name: string;
-  dni: string;
+  id: number;
+  nombre: string;
 }
 
 interface SaleFormData {
@@ -71,21 +70,25 @@ function SalesPage() {
     discount: 0,
   });
 
-  const [clients, setClients] = useState<Client[]>([
-    { id: "1", name: "Juan Pérez", dni: "12345678" },
-    { id: "2", name: "María García", dni: "87654321" },
-  ]);
+  const [clients, setClients] = useState<Client[]>([]);
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/apimain/usuarios")
+      .then((response) => response.json())
+      .then((json) => setClients(json))
+      .catch((error) => console.log("error", error));
+  }, []);
+  console.log(clients);
+  const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedClient = clients.find(
+      (c: Client) => c.id === Number(e.target.value)
+    );
+    setFormData((prev) => ({ ...prev, client: selectedClient || null }));
+  };
 
   const [products, setProducts] = useState<Product[]>([
     { id: "1", name: "Vino Malbec", price: 2500, stock: 50 },
     { id: "2", name: "Cerveza IPA", price: 800, stock: 100 },
-    { id: "3", name: "Agua Mineral", price: 300, stock: 200 },
   ]);
-
-  const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedClient = clients.find((c) => c.id === e.target.value);
-    setFormData((prev) => ({ ...prev, client: selectedClient || null }));
-  };
 
   const handleAddProduct = (productId: string, quantity: number) => {
     const product = products.find((p) => p.id === productId);
@@ -166,19 +169,22 @@ function SalesPage() {
         </Link>
         <h2 className="sales-title">Nueva Venta</h2>
 
+        <p>Clientes cargados: {clients.length}</p>
+        <br />
+
         <form className="sales-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="client">Cliente</label>
             <select
               id="client"
-              value={formData.client?.id || ""}
+              value={formData.client || ""}
               onChange={handleClientChange}
               required
             >
               <option value="">Seleccionar cliente</option>
               {clients.map((client) => (
                 <option key={client.id} value={client.id}>
-                  {client.name} - DNI: {client.dni}
+                  {client.nombre}
                 </option>
               ))}
             </select>
