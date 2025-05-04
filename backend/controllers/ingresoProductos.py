@@ -5,9 +5,8 @@ from flask_cors import CORS, cross_origin
 from marshmallow import ValidationError
 
 from modelsDb import conexion
-from modelsDb.conexion import Session
+from modelsDb.conexion import session
 from modelsDb.model_stock import Stock
-session=Session()
 
 
 productos=Blueprint("ingresoProductos", __name__, url_prefix="/ingresoProductos")

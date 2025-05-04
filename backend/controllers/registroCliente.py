@@ -4,10 +4,9 @@ from flask import Blueprint, request
 from marshmallow import ValidationError
 
 from modelsDb import conexion
-from modelsDb.conexion import Session
 from modelsDb.model_cliente import Cliente
+from modelsDb.conexion import session
 
-session=Session()
 
 registro= Blueprint('registroCliente', __name__, url_prefix='/registroCliente')
 

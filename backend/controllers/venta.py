@@ -5,13 +5,12 @@ from datetime import datetime,date
 from marshmallow import ValidationError
 
 from modelsDb import conexion
-from modelsDb.conexion import Session
+from modelsDb.conexion import session
 from modelsDb.model_factura import Factura
 from sqlalchemy import select
 from modelsDb.model_stock import Stock
 from modelsDb.model_detafact import DetalleFactura
 
-session=Session()
 
 ventas=Blueprint("ventas", __name__, url_prefix="ventas")
 

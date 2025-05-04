@@ -64,6 +64,8 @@ function SalesPage() {
     paymentMethod: "efectivo",
     discount: 0,
   });
+
+  //REGISTRO CLIENTES
   interface Client {
     id: number;
     nombre: string;
@@ -82,6 +84,7 @@ function SalesPage() {
   const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = parseInt(e.target.value, 10);
     setFormData((prev) => ({ ...prev, client: selectedId }));
+    console.log(selectedId);
   };
 
   const [products, setProducts] = useState<Product[]>([
