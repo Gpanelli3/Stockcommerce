@@ -9,15 +9,7 @@ import {
   UserPlus,
   ShoppingCart,
 } from "lucide-react";
-
-interface ProductFormData {
-  name: string;
-  supplier: string;
-  category: string;
-  quantity: number;
-  costPrice: number;
-  salePrice: number;
-}
+import CatalogPage from "./components/productos";
 
 interface ClientFormData {
   name: string;
@@ -48,6 +40,7 @@ interface SaleFormData {
   paymentMethod: string;
   discount: number;
 }
+
 // Sales Page Component
 function SalesPage() {
   const [formData, setFormData] = useState<SaleFormData>({
@@ -355,7 +348,9 @@ function HomePage() {
             artesanales.
           </p>
           <div className="hero-buttons">
-            <button className="hero-button">Explorar Catálogo</button>
+            <Link to="/catalog" className="hero-button">
+              Explorar Catálogo
+            </Link>
             <Link to="/register-client" className="hero-button register-client">
               <UserPlus size={20} />
               Registrar Cliente
@@ -729,6 +724,7 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/register-client" element={<ClientRegistration />} />
       <Route path="/sales" element={<SalesPage />} />
+      <Route path="/catalog" element={<CatalogPage />} />
     </Routes>
   );
 }
