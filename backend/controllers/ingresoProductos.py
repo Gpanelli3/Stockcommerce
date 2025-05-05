@@ -9,9 +9,9 @@ from modelsDb.conexion import session
 from modelsDb.model_stock import Stock
 
 
-productos=Blueprint("ingresoProductos", __name__, url_prefix="/ingresoProductos")
-@productos.post("/")
-def ingresoProductos():
+ingresoProductos=Blueprint("ingresoProductos", __name__, url_prefix="/ingresoProductos")
+@ingresoProductos.post("/")
+def ingresarProd():
 
     try:
         nombre=request.json["name"]

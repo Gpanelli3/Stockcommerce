@@ -35,13 +35,6 @@ interface ProductCardProps {
   name: string;
   price: string;
 }
-// New interfaces for sales
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-}
 
 interface SaleItem {
   product: Product;
@@ -79,51 +72,72 @@ function SalesPage() {
       .catch((error) => console.log("Error al cargar clientes:", error));
   }, []);
 
-  console.log(clients);
-
   const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = parseInt(e.target.value, 10);
     setFormData((prev) => ({ ...prev, client: selectedId }));
     console.log(selectedId);
   };
 
-  const [products, setProducts] = useState<Product[]>([
-    { id: "1", name: "Vino Malbec", price: 2500, stock: 50 },
-    { id: "2", name: "Cerveza IPA", price: 800, stock: 100 },
-  ]);
+  // interfaz para traer los productos
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+    stock: number;
+  }
+  // fetch para traer los productos
+  const [products, setProducts] = useState<Product[]>([]);
+  const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/apimain/productos")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.log("error al cargar los productos", error));
+  }, []);
 
-  const handleAddProduct = (productId: string, quantity: number) => {
+  // funcion para manejar la seleccion de cada producto
+  const handleSetProductQuantity = (productId: number, newQuantity: number) => {
     const product = products.find((p) => p.id === productId);
-    if (!product || quantity <= 0) return;
-
+    if (!product || newQuantity < 0) return;
+    console.log(product);
+    setQuantities((prev) => ({ ...prev, [productId]: newQuantity }));
     setFormData((prev) => {
       const existingItem = prev.items.find(
         (item) => item.product.id === productId
       );
+
       if (existingItem) {
         return {
           ...prev,
           items: prev.items.map((item) =>
             item.product.id === productId
-              ? { ...item, quantity: item.quantity + quantity }
+              ? { ...item, quantity: newQuantity }
               : item
           ),
         };
       }
+
       return {
         ...prev,
-        items: [...prev.items, { product, quantity }],
+        items: [...prev.items, { product, quantity: newQuantity }],
       };
     });
   };
 
-  const handleRemoveProduct = (productId: string) => {
+  // funcion para remover productos
+  const handleRemoveProduct = (productId: number) => {
     setFormData((prev) => ({
       ...prev,
       items: prev.items.filter((item) => item.product.id !== productId),
     }));
-  };
 
+    setQuantities((prev) => {
+      const updated = { ...prev };
+      delete updated[productId];
+      return updated;
+    });
+  };
+  // funcion para calcular el total
   const calculateTotal = () => {
     const subtotal = formData.items.reduce(
       (total, item) => total + item.product.price * item.quantity,
@@ -135,14 +149,29 @@ function SalesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const payload = {
+      cliente_id: formData.client?.id,
+      idsProductos: formData.items.map((item) => item.product.id),
+      productos: formData.items.reduce((acc, item) => {
+        acc[item.product.id] = item.quantity;
+        return acc;
+      }, {} as Record<number, number>),
+      descripcion: formData.description,
+      medio_de_pago: formData.paymentMethod,
+      descuento: formData.discount,
+    };
+
     try {
-      const response = await fetch("/api/sales", {
+      const response = await fetch("http://127.0.0.1:5000/apimain/ventas/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
+
+      console.log(payload); // para ver lo que se está enviando
 
       if (!response.ok) {
         throw new Error("Error al procesar la venta");
@@ -194,6 +223,7 @@ function SalesPage() {
 
           <div className="form-group">
             <label>Productos</label>
+            <p>productos cargados {products.length}</p>
             <div className="products-selection">
               {products.map((product) => (
                 <div key={product.id} className="product-selection-item">
@@ -206,8 +236,12 @@ function SalesPage() {
                       min="1"
                       max={product.stock}
                       placeholder="Cantidad"
+                      value={quantities[product.id] || ""}
                       onChange={(e) =>
-                        handleAddProduct(product.id, parseInt(e.target.value))
+                        handleSetProductQuantity(
+                          product.id,
+                          parseInt(e.target.value)
+                        )
                       }
                     />
                   </div>
