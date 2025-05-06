@@ -67,8 +67,9 @@ function SalesPage() {
 
   const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = parseInt(e.target.value, 10);
-    setFormData((prev) => ({ ...prev, client: selectedId }));
-    console.log(selectedId);
+    const selectedClient = clients.find((client) => client.id === selectedId);
+    setFormData((prev) => ({ ...prev, client: selectedClient }));
+    console.log("Cliente seleccionado:", selectedClient);
   };
 
   // interfaz para traer los productos
@@ -142,19 +143,23 @@ function SalesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // ids de productos
+    const productIds = formData.items.map((item) => item.product.id);
+    // ids con cantidad de c/u
+    const productQuantities = formData.items.reduce((acc, item) => {
+      acc[item.product.id] = item.quantity;
+      return acc;
+    }, {} as { [key: number]: number });
 
     const payload = {
-      cliente_id: formData.client?.id,
-      idsProductos: formData.items.map((item) => item.product.id),
-      productos: formData.items.reduce((acc, item) => {
-        acc[item.product.id] = item.quantity;
-        return acc;
-      }, {} as Record<number, number>),
+      cliente_id: formData.client.id,
+      product_ids: productIds,
+      product_quantities: productQuantities,
       descripcion: formData.description,
       medio_de_pago: formData.paymentMethod,
       descuento: formData.discount,
     };
-
+    console.log(payload);
     try {
       const response = await fetch("http://127.0.0.1:5000/apimain/ventas/", {
         method: "POST",
@@ -201,7 +206,7 @@ function SalesPage() {
             <label htmlFor="client">Cliente</label>
             <select
               id="client"
-              value={formData.client}
+              value={formData.client?.id || ""}
               onChange={handleClientChange}
               required
             >

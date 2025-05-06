@@ -12,16 +12,16 @@ from modelsDb.model_stock import Stock
 from modelsDb.model_detafact import DetalleFactura
 
 
-ventas=Blueprint("ventas", __name__, url_prefix="/ventas")
+ventas=Blueprint("ventas", __name__, url_prefix="/ventas") #falta terminar este endpoint
 
 @ventas.post("/")
 def ventasProductos():
-    cliente_id = request.json["client"]
-    ids_productos = request.json["idsProductos"]  # recibe una lista
+    cliente_id = request.json["cliente_id"]
     descripcion = request.json['descripcion']
-    medio_de_pago = request.json['medio_de_pago']
     descuento = request.json['descuento']
-    cantidades_por_producto = request.json["productos"]  # diccionario tipo {"4": 2, "7": 1}
+    medio_de_pago = request.json['medio_de_pago']
+    ids_productos = request.json["product_ids"]  # recibe una lista
+    cantidades_por_producto = request.json["product_quantities"]  # diccionario tipo {"4": 2, "7": 1}
 
     detalles = []
 
