@@ -38,7 +38,6 @@ interface SaleFormData {
   items: SaleItem[];
   description: string;
   paymentMethod: string;
-  discount: number;
   subtotal: number;
 }
 
@@ -49,7 +48,6 @@ function SalesPage() {
     items: [],
     description: "",
     paymentMethod: "efectivo",
-    discount: 0,
     subtotal: 0,
   });
 
@@ -139,8 +137,7 @@ function SalesPage() {
       (total, item) => total + item.product.price * item.quantity,
       0
     );
-    const discount = subtotal * (formData.discount / 100);
-    return subtotal - discount;
+    return subtotal;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -163,7 +160,6 @@ function SalesPage() {
       product_quantities: productQuantities,
       descripcion: formData.description,
       medio_de_pago: formData.paymentMethod,
-      descuento: formData.discount,
       subtotal: subtotal,
     };
     console.log(payload);
@@ -187,7 +183,6 @@ function SalesPage() {
         items: [],
         description: "",
         paymentMethod: "efectivo",
-        discount: 0,
         subtotal: 0,
       });
 
@@ -307,23 +302,6 @@ function SalesPage() {
               <option value="tarjeta">Tarjeta de Crédito</option>
               <option value="transferencia">Transferencia Bancaria</option>
             </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="discount">Descuento (%)</label>
-            <input
-              type="number"
-              id="discount"
-              min="0"
-              max="100"
-              value={formData.discount}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  discount: parseInt(e.target.value) || 0,
-                }))
-              }
-            />
           </div>
 
           <div className="sale-total">

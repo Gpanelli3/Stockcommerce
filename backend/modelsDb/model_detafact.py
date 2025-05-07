@@ -11,3 +11,5 @@ class DetalleFactura(conexion.Base):
      cantidad=Column(Integer, nullable=False )
      subtotal=Column(Integer, nullable=False )
    
+     def __repr__(self):
+          return f"<DetalleFactura producto={self.id_productos}, cantidad={self.cantidad}, subtotal={self.subtotal}>"
