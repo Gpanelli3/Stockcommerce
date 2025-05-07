@@ -39,6 +39,7 @@ interface SaleFormData {
   description: string;
   paymentMethod: string;
   discount: number;
+  subtotal: number;
 }
 
 // Sales Page Component
@@ -49,6 +50,7 @@ function SalesPage() {
     description: "",
     paymentMethod: "efectivo",
     discount: 0,
+    subtotal: 0,
   });
 
   //REGISTRO CLIENTES
@@ -150,6 +152,10 @@ function SalesPage() {
       acc[item.product.id] = item.quantity;
       return acc;
     }, {} as { [key: number]: number });
+    // calcular subtotal
+    const subtotal = formData.items.reduce((total, item) => {
+      return total + item.product.price * item.quantity;
+    }, 0);
 
     const payload = {
       cliente_id: formData.client.id,
@@ -158,6 +164,7 @@ function SalesPage() {
       descripcion: formData.description,
       medio_de_pago: formData.paymentMethod,
       descuento: formData.discount,
+      subtotal: subtotal,
     };
     console.log(payload);
     try {
@@ -181,6 +188,7 @@ function SalesPage() {
         description: "",
         paymentMethod: "efectivo",
         discount: 0,
+        subtotal: 0,
       });
 
       alert("Venta procesada exitosamente");

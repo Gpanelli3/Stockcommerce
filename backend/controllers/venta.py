@@ -26,13 +26,14 @@ def ventasProductos():
     detalles = []
 
 
-    detalle = DetalleFactura(
-        facturaId=None,  # lo seteamos después
-        id_productos=producto.id_producto,
-        cantidad=cantidad_vendida,
-        subtotal=subtotal
+    for producto in ids_productos:
+        detalle = DetalleFactura(
+            facturaId=None,  # lo seteamos después
+            id_productos=producto.id_producto,
+            cantidad=producto.cantidad,
+            subtotal=subtotal
         )
-    detalles.append(detalle)
+        detalles.append(detalle)
 
         # Actualizar el stock
     producto.cantidad -= cantidad_vendida
@@ -76,3 +77,12 @@ def ventasProductos():
 
 
 # }
+
+# desde la consola:
+    cliente_id: 2
+    product_ids: [108, 107]
+    product_quantities: {108: 5, 107: 1}
+    descripcion: "ksksksks"
+    medio_de_pago: "efectivo"
+    descuento: 0
+    subtotal: 25800
