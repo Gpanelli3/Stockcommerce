@@ -173,7 +173,7 @@ function SalesPage() {
       });
 
       console.log(payload); // para ver lo que se está enviando
-
+      setQuantities({});
       if (!response.ok) {
         throw new Error("Error al procesar la venta");
       }
@@ -229,7 +229,8 @@ function SalesPage() {
               {products.map((product) => (
                 <div key={product.id} className="product-selection-item">
                   <span>
-                    {product.name} - ${product.price}
+                    {product.name} - ${product.price} - cantidad:{" "}
+                    {product.stock}
                   </span>
                   <div className="product-actions">
                     <input
