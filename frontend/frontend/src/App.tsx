@@ -10,6 +10,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import CatalogPage from "./components/productos";
+import LoginPage from "./components/login";
 
 interface ClientFormData {
   name: string;
@@ -713,6 +714,7 @@ function ProductCard({ image, name, price }: ProductCardProps) {
 function App() {
   return (
     <Routes>
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/register-client" element={<ClientRegistration />} />
       <Route path="/sales" element={<SalesPage />} />

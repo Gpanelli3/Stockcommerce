@@ -11,8 +11,6 @@ from sqlalchemy import select
 from modelsDb.model_stock import Stock
 from modelsDb.model_detafact import DetalleFactura
 
-#determinar en el front la validacion de las cantidades de cada producto
-#mejorar: cuando la venta es exitosa, que se borren los numeros de las casillas
 #ver despues bien el session
 
 ventas=Blueprint("ventas", __name__, url_prefix="/ventas") #falta terminar este endpoint
