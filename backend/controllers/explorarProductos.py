@@ -5,7 +5,8 @@ from modelsDb import conexion
 from modelsDb.conexion import session
 from modelsDb.model_stock import Stock
 from sqlalchemy import select
-
+from modelsDb.model_categoria import Categoria
+from modelsDb.model_proveedor import Proveedor
 
 
 catalogoProductos=Blueprint("catalogoProductos", __name__, url_prefix="/catalogoProductos")
@@ -16,9 +17,11 @@ def productos():
         prod = session.query(
         Stock.id_producto, Stock.nombre, Stock.cantidad,
         Stock.precio_costo, Stock.precio_venta,
-        Stock.id_proveedor, Stock.categoria
-)
-
+        Proveedor.empresa, Categoria.categoria_producto
+         ).join(Categoria, Stock.categoria == Categoria.id_categoria
+        ).join(Proveedor, Stock.id_proveedor == Proveedor.id_proveedor
+        ).all()
+        
         listar_productos = [
     {
         "id": id,
@@ -26,10 +29,10 @@ def productos():
         "quantity": cantidad,
         "costPrice": precio_costo,
         "salePrice": precio_venta,
-        "supplierId": id_proveedor,
+        "supplier": empresa,
         "category": categoria
     }
-        for id, nombre_producto, cantidad, precio_costo, precio_venta, id_proveedor, categoria in prod
+        for id, nombre_producto, cantidad, precio_costo, precio_venta, empresa, categoria in prod
 ]
 
         return jsonify(listar_productos)
