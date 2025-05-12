@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Mail } from "lucide-react";
 
 interface LoginCredentials {
-  email: string;
+  nombre: string;
   password: string;
 }
 
@@ -22,7 +22,7 @@ function LoginPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/apimain/login", {
+      const response = await fetch("http://127.0.0.1:5000/apimain/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,6 +35,8 @@ function LoginPage() {
       }
 
       const data = await response.json();
+
+      console.log(credentials);
 
       // Store the token or user data in localStorage/sessionStorage
       localStorage.setItem("userToken", data.token);
@@ -71,8 +73,8 @@ function LoginPage() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email
+              <label htmlFor="nombre" className="sr-only">
+                Nombre
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -82,11 +84,11 @@ function LoginPage() {
                   id="nombre"
                   name="nombre"
                   type="text"
-                  autoComplete="email"
+                  autoComplete="nombre"
                   required
                   className="appearance-none rounded-lg relative block w-full pl-10 pr-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                  placeholder="Email"
-                  value={credentials.email}
+                  placeholder="Nombre"
+                  value={credentials.nombre}
                   onChange={handleChange}
                 />
               </div>

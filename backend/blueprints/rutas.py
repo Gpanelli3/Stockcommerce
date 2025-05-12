@@ -7,6 +7,7 @@ from controllers.usuarios import usuarios
 from controllers.productos import productos
 from controllers.explorarProductos import catalogoProductos
 from controllers.login import login
+from controllers.editarProductos import editarProductos
 
 
 apimain= Blueprint('apimain', __name__, url_prefix='/apimain')
@@ -18,6 +19,7 @@ apimain.register_blueprint(usuarios)
 apimain.register_blueprint(productos)
 apimain.register_blueprint(catalogoProductos)
 apimain.register_blueprint(login)
+apimain.register_blueprint(editarProductos)
 
 
 

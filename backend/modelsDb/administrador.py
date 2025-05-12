@@ -10,14 +10,6 @@ class Administrador(conexion.Base):
     telefono= Column(Integer, nullable=False)
     password=Column(String, nullable=False)
 
-                     
-    def __init__(self,idCliente,nombre,dni,telefono, password):
-        self.idCliente=idCliente
-        self.nombre=nombre
-        self.dni=dni
-        self.telefono=telefono
-        self.password=password
-
 
 
 

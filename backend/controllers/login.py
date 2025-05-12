@@ -1,9 +1,12 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS, cross_origin
+from sqlalchemy import update
+#from schemas.user_schema import userRegisterSchema
+from marshmallow import ValidationError
 
 from modelsDb import conexion
-from modelsDb.administrador import Administrador
 from modelsDb.conexion import session
+from modelsDb.administrador import Administrador
 
 login=Blueprint("login", __name__, url_prefix="/login")
 
@@ -11,7 +14,6 @@ login=Blueprint("login", __name__, url_prefix="/login")
 def inicioSesion():
     nombre=request.json["nombre"]
     password=request.json["password"]
-    print("viene del front", nombre, password)
     
     usuario = conexion.session.query(Administrador).filter_by(nombre=nombre, password=password).first()
 
@@ -20,3 +22,8 @@ def inicioSesion():
     
     else:
         return jsonify({"mensaje": "usuario no encontrado"})
+    
+#     {
+#     "nombre": "genaro",
+#     "password": 123456
+# }

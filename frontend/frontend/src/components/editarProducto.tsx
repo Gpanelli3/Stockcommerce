@@ -12,9 +12,10 @@ import {
 
 const EditarProduct = () => {
   const [productData, setProductData] = useState({
-    id: "",
-    name: "",
-    price: "",
+    producto: "",
+    cantidad: "",
+    precio_costo: "",
+    precio_venta: "",
   });
 
   const handleChange = (e) => {
@@ -28,20 +29,26 @@ const EditarProduct = () => {
     e.preventDefault();
     try {
       const res = await fetch(
-        `http://localhost:3000/api/products/${productData.id}`,
+        `http://127.0.0.1:5000/apimain/editarProductos/`,
         {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name: productData.name,
-            price: productData.price,
-          }),
+          body: JSON.stringify(productData),
+          credentials: "include",
         }
       );
+      console.log(productData);
 
       if (!res.ok) throw new Error("Error al editar el producto");
+
+      setProductData({
+        producto: "",
+        cantidad: "",
+        precio_costo: "",
+        precio_venta: "",
+      });
 
       const result = await res.json();
       console.log("Producto editado:", result);
@@ -53,26 +60,34 @@ const EditarProduct = () => {
   return (
     <form onSubmit={EditProduct}>
       <input
-        name="id"
-        type="text"
-        placeholder="ID del producto"
-        value={productData.id}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="name"
-        type="text"
-        placeholder="Nombre del producto"
-        value={productData.name}
-        onChange={handleChange}
-        required
-      />
-      <input
-        name="price"
+        name="producto"
         type="number"
-        placeholder="Precio"
-        value={productData.price}
+        placeholder="ID del producto"
+        value={productData.producto}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="cantidad"
+        type="number"
+        placeholder="cantidad nueva"
+        value={productData.cantidad}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="precio_costo"
+        type="number"
+        placeholder="precio costo"
+        value={productData.precio_costo}
+        onChange={handleChange}
+        required
+      />
+      <input
+        name="precio_venta"
+        type="number"
+        placeholder="precio venta"
+        value={productData.precio_venta}
         onChange={handleChange}
         required
       />
