@@ -374,9 +374,9 @@ function HomePage() {
             {showForm ? "Cerrar Formulario" : "Agregar Producto"}
           </button>
         </div>
-
-        {showForm && <ProductForm />}
       </div>
+
+      {showForm && <ProductForm />}
 
       {/* Categories Section */}
       <div className="categories">

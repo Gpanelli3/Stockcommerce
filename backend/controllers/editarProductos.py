@@ -29,3 +29,18 @@ def editar():
     except ValidationError as badValidation:
         print(f"error {badValidation}")
         return jsonify({"error": "Error de validación", "detalle": str(badValidation)}), 400
+
+#PRODUCTOS LISTA
+productosParaEditar=Blueprint("productosParaEditar", __name__, url_prefix="/productosParaEditar")
+
+@productosParaEditar.get("/")
+def traer_productos():
+    try:
+        prod=session.query(Stock.id_producto, Stock.nombre, Stock.precio_venta,Stock.precio_costo ,Stock.cantidad) #ver luego si puedo traer la cantidad tambien
+        listar_productos=[{"id": id, "name":nombre_producto, "costPrice": precio_costo , "salePrice":precio_venta,"quantity": cantidad} for id, nombre_producto, precio_costo,precio_venta, cantidad in prod]
+
+        return jsonify(listar_productos)
+    
+    except ValidationError as badValidation:
+        print(f"error {badValidation}")
+        return "error", 400
