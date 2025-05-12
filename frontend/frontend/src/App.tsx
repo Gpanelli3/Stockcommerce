@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import CatalogPage from "./components/productos";
 import LoginPage from "./components/login";
+import EditarProduct from "./components/editarProducto";
 
 interface ClientFormData {
   name: string;
@@ -321,6 +322,8 @@ function SalesPage() {
 
 function HomePage() {
   const [showForm, setShowForm] = useState(false);
+  // EDITAR PRODUCTOS
+  const [showEditForm, setShowEditForm] = useState(false);
 
   return (
     <div className="app">
@@ -352,11 +355,14 @@ function HomePage() {
               <ShoppingCart size={20} />
               Nueva Venta
             </Link>
+            <Link to="/editarProduct" className="hero-button">
+              Editar Productos
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Product Management Section */}
+      {/* BOTONES DE AGREGAR Y EDITAR */}
       <div className="product-management">
         <div className="management-header">
           <h2 className="section-title">Gestión de Productos</h2>
@@ -527,8 +533,7 @@ function ClientRegistration() {
     </div>
   );
 }
-//registro productos
-
+/////////////////////registro productos
 function ProductForm() {
   const [formData, setFormData] = useState<ProductFormData>({
     name: "",
@@ -542,7 +547,6 @@ function ProductForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Here you would add your endpoint URL
       const response = await fetch(
         "http://127.0.0.1:5000/apimain/ingresoProductos/",
         {
@@ -559,7 +563,6 @@ function ProductForm() {
         throw new Error("Error al guardar el producto");
       }
 
-      // Reset form after successful submission
       setFormData({
         name: "",
         supplier: "",
@@ -685,6 +688,7 @@ function ProductForm() {
     </form>
   );
 }
+// editar productos
 
 function CategoryCard({ icon, title, description }: CategoryCardProps) {
   return (
@@ -719,6 +723,7 @@ function App() {
       <Route path="/register-client" element={<ClientRegistration />} />
       <Route path="/sales" element={<SalesPage />} />
       <Route path="/catalog" element={<CatalogPage />} />
+      <Route path="/editarProduct" element={<EditarProduct />} />
     </Routes>
   );
 }
