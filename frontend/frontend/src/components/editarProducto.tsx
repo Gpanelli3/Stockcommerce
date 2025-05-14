@@ -92,35 +92,41 @@ const EditarProduct = () => {
     }
   };
   return (
-    <form onSubmit={EditProduct}>
+    <form onSubmit={EditProduct} className="edit-form">
+      <Link to="/" className="back-button">
+        Volver al inicio
+      </Link>
       <input
         name="producto"
         type="text"
-        placeholder=" Nombre del producto"
+        placeholder="Nombre del producto"
         value={productData.producto}
         onChange={handleChange}
         required
       />
+
       <input
         name="cantidad"
         type="number"
-        placeholder="cantidad nueva"
+        placeholder="Cantidad nueva"
         value={productData.cantidad}
         onChange={handleChange}
         required
       />
+
       <input
         name="precio_costo"
         type="number"
-        placeholder="precio costo"
+        placeholder="Precio costo"
         value={productData.precio_costo}
         onChange={handleChange}
         required
       />
+
       <input
         name="precio_venta"
         type="number"
-        placeholder="precio venta"
+        placeholder="Precio venta"
         value={productData.precio_venta}
         onChange={handleChange}
         required

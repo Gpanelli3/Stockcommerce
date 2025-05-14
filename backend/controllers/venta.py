@@ -68,6 +68,7 @@ def ventasProductos():
     try:
         conexion.session.commit()
     except Exception as e:
+        session.rollback()
         print(f"Error al guardar detalles: {e}")
         return {"error": "No se pudieron guardar los detalles de la factura."}
 
