@@ -16,7 +16,7 @@ ventasMes=Blueprint("ventasMes", __name__, url_prefix="/ventasMes")
 masVendido=Blueprint("masVendido", __name__, url_prefix="/masVendido") 
 
 
-@ventasMes.get("/")
+@ventasMes.post("/")
 def datos():
     #VENTAS TOTALES DEL AÑO, hacer una seleccion para el mes y listo
     mes=request.json["mes"]
@@ -27,7 +27,7 @@ def datos():
 )
     result = session.execute(ventas).scalar()
 
-    return (f"las ventas totales del {mes} es de: {result or 0}")
+    return jsonify(f"las ventas totales del {mes} es de: {result or 0}")
 
 
 

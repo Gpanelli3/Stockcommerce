@@ -12,6 +12,7 @@ import {
 import CatalogPage from "./components/productos";
 import LoginPage from "./components/login";
 import EditarProduct from "./components/editarProducto";
+import VentasMes from "./components/ventasMes";
 
 interface ClientFormData {
   name: string;
@@ -357,6 +358,9 @@ function HomePage() {
             </Link>
             <Link to="/editarProduct" className="hero-button">
               Editar Productos
+            </Link>
+            <Link to="/ventasMes" className="hero-button register-client">
+              Ventas por mes
             </Link>
           </div>
         </div>
@@ -724,6 +728,7 @@ function App() {
       <Route path="/sales" element={<SalesPage />} />
       <Route path="/catalog" element={<CatalogPage />} />
       <Route path="/editarProduct" element={<EditarProduct />} />
+      <Route path="/ventasMes" element={<VentasMes />} />
     </Routes>
   );
 }
