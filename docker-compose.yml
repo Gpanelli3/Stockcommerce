@@ -1,0 +1,36 @@
+
+services:
+  database:
+    container_name: mysql
+    image: mysql:8.0.39
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stockcommerce
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: root
+    volumes:
+      - stockcommerceDB:/var/lib/mysql
+
+  #FLASK APP
+  web:
+    build:
+      context: ./backend/
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stockcommerce
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: root
+
+    restart: always
+
+    volumes:
+      - ./backend:/app
+
+volumes:
+  stockcommerceDB:
