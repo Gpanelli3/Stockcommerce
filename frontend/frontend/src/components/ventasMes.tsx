@@ -10,9 +10,23 @@ import {
   ShoppingCart,
 } from "lucide-react";
 
+interface MasVendido {
+  cantidad_vendida: number;
+  id_producto: number;
+  nombre_producto: string;
+}
+
 const VentasMes = () => {
   const [mesSeleccionado, setMesSeleccionado] = useState("");
-  const [ventas, setVentas] = useState(null);
+  const [ventas, setVentas] = useState<any>(null);
+  const [masVendidos, setMasVendidos] = useState<MasVendido | null>(null);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/apimain/masVendido/")
+      .then((res) => res.json())
+      .then((datos) => setMasVendidos(datos))
+      .catch((error) => console.log("error al cargar los productos", error));
+  }, []);
 
   const meses = [
     { nombre: "Enero", valor: "1" },
@@ -55,9 +69,16 @@ const VentasMes = () => {
   };
 
   return (
-    <div>
-      <h2>Ingresar mes para conocer tus venta</h2>
-      <select value={mesSeleccionado} onChange={handleChange}>
+    <div className="contenedor">
+      <Link to="/" className="back-button">
+        Volver al inicio
+      </Link>
+      <h2 className="titulo">Ingresar mes para conocer tus ventas</h2>
+      <select
+        value={mesSeleccionado}
+        onChange={handleChange}
+        className="select-mes"
+      >
         <option value="">Seleccionar mes</option>
         {meses.map((mes) => (
           <option key={mes.valor} value={mes.valor}>
@@ -65,15 +86,24 @@ const VentasMes = () => {
           </option>
         ))}
       </select>
-
       {ventas && (
-        <div>
-          <h3>Ventas del mes:</h3>
-          <pre>{JSON.stringify(ventas, null, 2)}</pre>
+        <div className="ventas-contenedor">
+          <h3 className="subtitulo">Ventas del mes:</h3>
+          <pre className="ventas-json">{JSON.stringify(ventas, null, 2)}</pre>
+        </div>
+      )}
+
+      {masVendidos && (
+        <div className="ventas-contenedor">
+          <h3 className="subtitulo">Producto más vendido:</h3>
+          <p>Producto: {masVendidos.nombre_producto}</p>
+          <p>
+            ventas procesadas de dicho producto: {masVendidos.cantidad_vendida}
+          </p>
+          <p>ID producto: {masVendidos.id_producto}</p>
         </div>
       )}
     </div>
   );
 };
-
 export default VentasMes;

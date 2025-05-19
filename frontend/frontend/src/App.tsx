@@ -13,6 +13,7 @@ import CatalogPage from "./components/productos";
 import LoginPage from "./components/login";
 import EditarProduct from "./components/editarProducto";
 import VentasMes from "./components/ventasMes";
+import Facturas from "./components/facturas";
 
 interface ClientFormData {
   name: string;
@@ -226,30 +227,30 @@ function SalesPage() {
           </div>
 
           <div className="form-group">
-            <label>Productos</label>
-            <p>productos cargados {products.length}</p>
-            <div className="products-selection">
+            <label className="titulo-productos">Productos disponibles</label>
+            <p className="cantidad-productos">
+              Productos cargados: {products.length}
+            </p>
+
+            <div className="products-grid">
               {products.map((product) => (
-                <div key={product.id} className="product-selection-item">
-                  <span>
-                    {product.name} - ${product.price} - cantidad:{" "}
-                    {product.stock}
-                  </span>
-                  <div className="product-actions">
-                    <input
-                      type="number"
-                      min="1"
-                      max={product.stock}
-                      placeholder="Cantidad"
-                      value={quantities[product.id] || ""}
-                      onChange={(e) =>
-                        handleSetProductQuantity(
-                          product.id,
-                          parseInt(e.target.value)
-                        )
-                      }
-                    />
-                  </div>
+                <div key={product.id} className="product-card">
+                  <h4>{product.name}</h4>
+                  <p>Precio: ${product.price}</p>
+                  <p>Stock: {product.stock}</p>
+                  <input
+                    type="number"
+                    min="1"
+                    max={product.stock}
+                    placeholder="Cantidad"
+                    value={quantities[product.id] || ""}
+                    onChange={(e) =>
+                      handleSetProductQuantity(
+                        product.id,
+                        parseInt(e.target.value)
+                      )
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -338,12 +339,8 @@ function HomePage() {
         </div>
 
         <div className="hero-content">
-          <h1 className="hero-title">Descubre el Arte de la Bebida</h1>
-          <p className="hero-description">
-            Explora nuestra selecta colección de bebidas premium, desde
-            refrescantes aguas minerales hasta los más finos vinos y cervezas
-            artesanales.
-          </p>
+          <h1 className="hero-title">STOCK CONTROL</h1>
+          <p className="hero-description">GESTION DE VENTAS DE BEBIDAS</p>
           <div className="hero-buttons">
             <Link to="/catalog" className="hero-button">
               Explorar Catálogo
@@ -360,7 +357,10 @@ function HomePage() {
               Editar Productos
             </Link>
             <Link to="/ventasMes" className="hero-button register-client">
-              Ventas por mes
+              Estadisticas
+            </Link>
+            <Link to="/facturas" className="hero-button">
+              Ver facturas
             </Link>
           </div>
         </div>
@@ -369,7 +369,6 @@ function HomePage() {
       {/* BOTONES DE AGREGAR Y EDITAR */}
       <div className="product-management">
         <div className="management-header">
-          <h2 className="section-title">Gestión de Productos</h2>
           <button
             className="add-product-button"
             onClick={() => setShowForm(!showForm)}
@@ -729,6 +728,7 @@ function App() {
       <Route path="/catalog" element={<CatalogPage />} />
       <Route path="/editarProduct" element={<EditarProduct />} />
       <Route path="/ventasMes" element={<VentasMes />} />
+      <Route path="/facturas" element={<Facturas />} />
     </Routes>
   );
 }

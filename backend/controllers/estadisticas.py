@@ -27,7 +27,7 @@ def datos():
 )
     result = session.execute(ventas).scalar()
 
-    return jsonify(f"las ventas totales del {mes} es de: {result or 0}")
+    return jsonify(f"las ventas totales del {mes} es de: ${result or 0} pesos")
 
 
 
