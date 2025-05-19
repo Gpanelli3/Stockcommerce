@@ -96,6 +96,7 @@ const EditarProduct = () => {
       <Link to="/" className="back-button">
         Volver al inicio
       </Link>
+      <h2>EDITAR PRODUCTOS</h2>
       <input
         name="producto"
         type="text"
