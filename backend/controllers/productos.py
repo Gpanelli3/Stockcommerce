@@ -12,7 +12,7 @@ productos=Blueprint("productos", __name__, url_prefix="/productos")
 @productos.get("/")
 def traer_productos():
     try:
-        prod=session.query(Stock.id_producto, Stock.nombre, Stock.precio_venta, Stock.cantidad)
+        prod=session.query(Stock.id_producto, Stock.nombre, Stock.precio_venta, Stock.cantidad).order_by(Stock.categoria)
         listar_productos=[{"id": id, "name":nombre_producto, "price": precio, "stock": stock} for id, nombre_producto, precio, stock in prod]
 
         return jsonify(listar_productos)

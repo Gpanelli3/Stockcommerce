@@ -443,8 +443,28 @@ function ClientRegistration() {
     phone: "",
   });
 
+  const [clients, setClients] = useState<Client[]>([]);
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/apimain/usuarios")
+      .then((res) => res.json())
+      .then((data) => setClients(data))
+      .catch((error) => console.log("Error al cargar clientes:", error));
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Verificar si el cliente ya existe
+    const clienteExiste = clients.some(
+      (cliente) =>
+        cliente.name.trim().toLowerCase() === formData.name.trim().toLowerCase()
+    );
+
+    if (clienteExiste) {
+      alert("Dicho cliente ya existe");
+      return;
+    }
+
     try {
       // Here you would add your endpoint URL
       const response = await fetch(
@@ -461,6 +481,7 @@ function ClientRegistration() {
       if (!response.ok) {
         throw new Error("Error al registrar el cliente");
       }
+      setClients((prev) => [...prev, { ...formData }]);
 
       // Reset form after successful submission
       setFormData({
@@ -611,14 +632,27 @@ function ProductForm() {
 
       <div className="form-group">
         <label htmlFor="supplier">Proveedor</label>
-        <input
-          type="text"
+        <select
           id="supplier"
           name="supplier"
           value={formData.supplier}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Proveedor</option>
+          <option value="1">Mendoza Drinks</option>
+          <option value="2">San Rafael Bebidas</option>
+          <option value="3">Coca cola company</option>
+          <option value="4">Panella</option>
+          <option value="5">cattai bebidas</option>
+          <option value="6">Cigarreria rojo</option>
+          <option value="7">Arcor</option>
+          <option value="8">Kento</option>
+          <option value="9">Bodega Bianchi</option>
+          <option value="10">bodega trivento</option>
+          <option value="11">bodega panelli</option>
+          <option value="12">Bodega Bianchi valle de uco</option>
+        </select>
       </div>
 
       <div className="form-group">
