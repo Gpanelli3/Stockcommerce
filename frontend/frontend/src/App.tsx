@@ -8,6 +8,7 @@ import {
   Plus,
   UserPlus,
   ShoppingCart,
+  Import,
 } from "lucide-react";
 import CatalogPage from "./components/productos";
 import LoginPage from "./components/login";
@@ -16,6 +17,7 @@ import VentasMes from "./components/ventasMes";
 import Facturas from "./components/facturas";
 import BorrarProducto from "./components/borrarProductos";
 import EditClient from "./components/editarCliente";
+// import FacturaGenerada from "./components/mostrarDetalle";
 
 interface ClientFormData {
   name: string;
@@ -48,6 +50,7 @@ interface SaleFormData {
 }
 
 // Sales Page Component
+
 function SalesPage() {
   const [formData, setFormData] = useState<SaleFormData>({
     client: null,

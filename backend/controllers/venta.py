@@ -1,6 +1,6 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from datetime import datetime,date
-
+import json
 #from schemas.user_schema import userRegisterSchema
 from marshmallow import ValidationError
 
@@ -65,11 +65,20 @@ def ventasProductos():
         detalle.facturaId = nueva_factura.nro_factura
         conexion.session.add(detalle)
 
-    try:
+    # print("los items vendidos son: ", json.dumps(detalles, indent=2, default=str))
+
+   
+    # ver despues aca que algunas veces me tira errores
+    try:  
         conexion.session.commit()
     except Exception as e:
         session.rollback()
         print(f"Error al guardar detalles: {e}")
         return {"error": "No se pudieron guardar los detalles de la factura."}
 
-    return f'Factura {nueva_factura.nro_factura} cargada en el sistema con {len(detalles)} productos.'
+    return jsonify({
+        "producto": detalle.id_productos,
+        "cantidad": detalle.cantidad,
+        "subtotal": detalle.subtotal
+    })
+    # return f'Factura {nueva_factura.nro_factura} cargada en el sistema con {len(detalles)} productos.'
