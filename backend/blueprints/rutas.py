@@ -13,6 +13,7 @@ from controllers.estadisticas import ventasMes
 from controllers.estadisticas import masVendido
 from controllers.facturas import facturas
 from controllers.borrarProducto import borrarProductos
+from controllers.editarCliente import editarCliente
 apimain= Blueprint('apimain', __name__, url_prefix='/apimain')
 
 apimain.register_blueprint(registro)
@@ -28,6 +29,8 @@ apimain.register_blueprint(ventasMes)
 apimain.register_blueprint(masVendido)
 apimain.register_blueprint(facturas)
 apimain.register_blueprint(borrarProductos)
+apimain.register_blueprint(editarCliente)
+
 
 
 

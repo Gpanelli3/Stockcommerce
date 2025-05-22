@@ -14,6 +14,8 @@ import LoginPage from "./components/login";
 import EditarProduct from "./components/editarProducto";
 import VentasMes from "./components/ventasMes";
 import Facturas from "./components/facturas";
+import BorrarProducto from "./components/borrarProductos";
+import EditClient from "./components/editarCliente";
 
 interface ClientFormData {
   name: string;
@@ -347,7 +349,7 @@ function HomePage() {
             </Link>
             <Link to="/register-client" className="hero-button register-client">
               <UserPlus size={20} />
-              Registrar Cliente
+              Clientes
             </Link>
             <Link to="/sales" className="hero-button sales">
               <ShoppingCart size={20} />
@@ -355,6 +357,9 @@ function HomePage() {
             </Link>
             <Link to="/editarProduct" className="hero-button">
               Editar Productos
+            </Link>
+            <Link to="/borrarProducto" className="hero-button">
+              Borrar Productos
             </Link>
             <Link to="/ventasMes" className="hero-button register-client">
               Estadisticas
@@ -466,7 +471,6 @@ function ClientRegistration() {
     }
 
     try {
-      // Here you would add your endpoint URL
       const response = await fetch(
         "http://127.0.0.1:5000/apimain/registroCliente/",
         {
@@ -483,7 +487,6 @@ function ClientRegistration() {
       }
       setClients((prev) => [...prev, { ...formData }]);
 
-      // Reset form after successful submission
       setFormData({
         name: "",
         dni: "",
@@ -510,6 +513,14 @@ function ClientRegistration() {
       <div className="registration-container">
         <Link to="/" className="back-button">
           Volver al inicio
+        </Link>
+        <br />
+        <Link to="/editarCliente" className="back-button">
+          Editar Cliente
+        </Link>
+        <br />
+        <Link to="/eliminarCliente" className="back-button">
+          Eliminar Cliente
         </Link>
         <h2 className="registration-title">Registro de Cliente Nuevo</h2>
         <form className="registration-form" onSubmit={handleSubmit}>
@@ -648,10 +659,10 @@ function ProductForm() {
           <option value="6">Cigarreria rojo</option>
           <option value="7">Arcor</option>
           <option value="8">Kento</option>
-          <option value="9">Bodega Bianchi</option>
-          <option value="10">bodega trivento</option>
-          <option value="11">bodega panelli</option>
-          <option value="12">Bodega Bianchi valle de uco</option>
+          <option value="50">Bodega Bianchi</option>
+          <option value="51">bodega trivento</option>
+          <option value="52">bodega panelli</option>
+          <option value="62">Bodega Bianchi valle de uco</option>
         </select>
       </div>
 
@@ -763,6 +774,9 @@ function App() {
       <Route path="/editarProduct" element={<EditarProduct />} />
       <Route path="/ventasMes" element={<VentasMes />} />
       <Route path="/facturas" element={<Facturas />} />
+      <Route path="/borrarProducto" element={<BorrarProducto />} />
+      <Route path="/editarCliente" element={<EditClient />} />
+      <Route path="/eliminarCliente" element={<Facturas />} />
     </Routes>
   );
 }
