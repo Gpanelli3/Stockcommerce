@@ -18,16 +18,47 @@ interface ProductFormData {
   salePrice: number;
 }
 
-// Catalog Page Component
 function CatalogPage() {
-  const [products, setProducts] = React.useState<ProductFormData[]>([]);
+  const [products, setProducts] = useState<ProductFormData[]>([]);
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
+  // Función para cargar todos los productos
+  const fetchAllProducts = () => {
     fetch("http://127.0.0.1:5000/apimain/catalogoProductos")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((error) => console.log("error al cargar los productos", error));
+  };
+
+  // Función para buscar productos por nombre
+  const fetchSearchedProducts = (query: string) => {
+    fetch(
+      `http://127.0.0.1:5000/apimain/buscador/?producto=${encodeURIComponent(
+        query
+      )}`
+    )
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((error) =>
+        console.log("error en la búsqueda de productos", error)
+      );
+  };
+
+  useEffect(() => {
+    fetchAllProducts();
   }, []);
+
+  // Maneja cambios en el input del buscador
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (value.trim() === "") {
+      fetchAllProducts();
+    } else {
+      fetchSearchedProducts(value);
+    }
+  };
 
   return (
     <div className="catalog-page">
@@ -36,6 +67,14 @@ function CatalogPage() {
           Volver al inicio
         </Link>
         <h2 className="catalog-title">Catálogo de Productos</h2>
+
+        <input
+          type="text"
+          placeholder="Buscar producto..."
+          value={search}
+          onChange={handleSearchChange}
+          style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+        />
 
         <div className="catalog-table">
           <table>
@@ -69,4 +108,5 @@ function CatalogPage() {
     </div>
   );
 }
+
 export default CatalogPage;

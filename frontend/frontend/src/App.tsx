@@ -81,7 +81,7 @@ function SalesPage() {
     console.log("Cliente seleccionado:", selectedClient);
   };
 
-  // interfaz para traer los productos
+  // interfaz para traer los productos. arreglar aca para que traiga bien los datos(costprice, saleprice, etc)
   interface Product {
     id: number;
     name: string;
@@ -91,12 +91,43 @@ function SalesPage() {
   // fetch para traer los productos
   const [products, setProducts] = useState<Product[]>([]);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
-  useEffect(() => {
+  const [search, setSearch] = useState("");
+
+  // Cargar todos los productos
+  const fetchAllProducts = () => {
     fetch("http://127.0.0.1:5000/apimain/productos")
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((error) => console.log("error al cargar los productos", error));
+  };
+  // Buscar productos por nombre
+  const fetchSearchedProducts = (query: string) => {
+    fetch(
+      `http://127.0.0.1:5000/apimain/buscador/?producto=${encodeURIComponent(
+        query
+      )}`
+    )
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((error) =>
+        console.log("error en la búsqueda de productos", error)
+      );
+  };
+  useEffect(() => {
+    fetchAllProducts();
   }, []);
+
+  // Manejar input del buscador
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    if (value.trim() === "") {
+      fetchAllProducts();
+    } else {
+      fetchSearchedProducts(value);
+    }
+  };
 
   // funcion para manejar la seleccion de cada producto
   const handleSetProductQuantity = (productId: number, newQuantity: number) => {
@@ -230,7 +261,12 @@ function SalesPage() {
               ))}
             </select>
           </div>
-
+          <input
+            type="text"
+            placeholder="Buscar producto..."
+            value={search}
+            onChange={handleSearchChange}
+          />
           <div className="form-group">
             <label className="titulo-productos">Productos disponibles</label>
             <p className="cantidad-productos">
