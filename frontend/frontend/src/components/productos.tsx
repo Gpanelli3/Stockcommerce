@@ -33,7 +33,7 @@ function CatalogPage() {
   // Función para buscar productos por nombre
   const fetchSearchedProducts = (query: string) => {
     fetch(
-      `http://127.0.0.1:5000/apimain/buscador/?producto=${encodeURIComponent(
+      `http://127.0.0.1:5000/apimain/buscadorCatalogo/?producto=${encodeURIComponent(
         query
       )}`
     )

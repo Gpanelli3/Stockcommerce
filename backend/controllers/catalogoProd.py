@@ -7,15 +7,14 @@ from modelsDb.model_stock import Stock
 from sqlalchemy import select
 
 
-buscador=Blueprint("buscador", __name__, url_prefix="/buscador")
+buscadorCatalogo=Blueprint("buscadorCatalogo", __name__, url_prefix="/buscadorCatalogo")
 
-@buscador.get("/")
+@buscadorCatalogo.get("/")
 def buscar():
     busqueda=request.args.get("producto", "")
 
     productos = session.query(Stock).filter(Stock.nombre.ilike(f"%{busqueda}%")).all()
-    resultados = [{"id": p.id_producto, "name": p.nombre, "price": p.precio_venta,"stock": p.cantidad } for p in productos]
+    resultados = [{"id": p.id_producto, "name": p.nombre, "costPrice": p.precio_costo,"salePrice": p.precio_venta,"quantity": p.cantidad } for p in productos]
+
 
     return jsonify(resultados)
-
-

@@ -91,7 +91,7 @@ function SalesPage() {
   // fetch para traer los productos
   const [products, setProducts] = useState<Product[]>([]);
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<Product[]>([]);
 
   // Cargar todos los productos
   const fetchAllProducts = () => {
