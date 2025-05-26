@@ -87,6 +87,19 @@ body {
 .hero-button.register-client:hover {
   background-color: #1d4ed8;
 }
+@media (max-width: 600px) {
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-button {
+    justify-content: center;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
 
 /* Product Management Section */
 .product-management {
@@ -689,4 +702,63 @@ textarea {
 
 .tabla-facturas th {
   background-color: #f2f2f2;
+}
+.contenedor {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.titulo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.exportar-pdf-button {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.exportar-pdf-button:hover {
+  background-color: #3730a3;
+}
+
+.tabla-detalle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-detalle th,
+.tabla-detalle td {
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.tabla-detalle th {
+  background-color: #f3f4f6;
+  font-weight: bold;
+}
+
+.tabla-detalle tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.tabla-detalle tr:hover {
+  background-color: #f1f5f9;
 }

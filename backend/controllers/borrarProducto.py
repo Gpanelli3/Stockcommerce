@@ -26,7 +26,7 @@ def borrar():
 
         session.commit()
 
-        return jsonify(f'numero {producto} de producto borradop correctamente')
+        return jsonify(f'numero {producto} de producto borrado correctamente')
     except ValidationError as badValidation:
         print(f"error {badValidation}")
         return jsonify({"error": "Error de validación", "detalle": str(badValidation)}), 400

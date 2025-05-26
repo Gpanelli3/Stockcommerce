@@ -17,6 +17,7 @@ import VentasMes from "./components/ventasMes";
 import Facturas from "./components/facturas";
 import BorrarProducto from "./components/borrarProductos";
 import EditClient from "./components/editarCliente";
+import DetalleFacturas from "./components/detalleClientes";
 // import FacturaGenerada from "./components/mostrarDetalle";
 
 interface ClientFormData {
@@ -383,16 +384,16 @@ function HomePage() {
           <h1 className="hero-title">STOCK CONTROL</h1>
           <p className="hero-description">GESTION DE VENTAS DE BEBIDAS</p>
           <div className="hero-buttons">
+            <Link to="/sales" className="hero-button sales">
+              <ShoppingCart size={20} />
+              Nueva Venta
+            </Link>
             <Link to="/catalog" className="hero-button">
               Explorar Catálogo
             </Link>
             <Link to="/register-client" className="hero-button register-client">
               <UserPlus size={20} />
               Clientes
-            </Link>
-            <Link to="/sales" className="hero-button sales">
-              <ShoppingCart size={20} />
-              Nueva Venta
             </Link>
             <Link to="/editarProduct" className="hero-button">
               Editar Productos
@@ -405,6 +406,9 @@ function HomePage() {
             </Link>
             <Link to="/facturas" className="hero-button">
               Ver facturas
+            </Link>
+            <Link to="/detalles" className="hero-button">
+              Ver Detalles
             </Link>
           </div>
         </div>
@@ -816,6 +820,7 @@ function App() {
       <Route path="/borrarProducto" element={<BorrarProducto />} />
       <Route path="/editarCliente" element={<EditClient />} />
       <Route path="/eliminarCliente" element={<Facturas />} />
+      <Route path="/detalles" element={<DetalleFacturas />} />
     </Routes>
   );
 }

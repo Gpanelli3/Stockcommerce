@@ -47,7 +47,6 @@ const Facturas = () => {
               <th>Fecha</th>
               <th>Descripción</th>
               <th>Pago</th>
-              <th>Descuento</th>
               <th>Total</th>
             </tr>
           </thead>
@@ -59,7 +58,6 @@ const Facturas = () => {
                 <td>{new Date(factura.fecha).toLocaleDateString()}</td>
                 <td>{factura.descripcion}</td>
                 <td>{factura.medio_de_pago}</td>
-                <td>{factura.descuento}</td>
                 <td>${factura.total.toFixed(2)}</td>
               </tr>
             ))}
