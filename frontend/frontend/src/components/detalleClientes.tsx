@@ -44,9 +44,14 @@ const DetalleFacturas = () => {
       // Encabezado
       const fechaHoy = new Date().toLocaleDateString();
       pdf.setFontSize(18);
-      pdf.text("STOCK CONTROL", pdf.internal.pageSize.getWidth() / 2, 15, {
-        align: "center",
-      });
+      pdf.text(
+        "STOCK CONTROL- FACTURA",
+        pdf.internal.pageSize.getWidth() / 2,
+        15,
+        {
+          align: "center",
+        }
+      );
       pdf.setFontSize(12);
       pdf.text(`Fecha: ${fechaHoy}`, pdf.internal.pageSize.getWidth() - 50, 22);
 
