@@ -4,7 +4,10 @@ from marshmallow import ValidationError
 from modelsDb import conexion
 from modelsDb.conexion import session
 from modelsDb.model_detafact import DetalleFactura
+from modelsDb.model_stock import Stock
+from modelsDb.model_factura import Factura
 from sqlalchemy import select
+
 
 detalle=Blueprint("detalle", __name__, url_prefix="/detalle")
 
@@ -15,19 +18,26 @@ def traerDetalles():
         prod = session.query(
             DetalleFactura.idDetalle,
             DetalleFactura.facturaId,
-            DetalleFactura.id_productos,
+            Stock.nombre,
+            Stock.precio_venta,
             DetalleFactura.cantidad,
-            DetalleFactura.subtotal,
-        ).filter(DetalleFactura.facturaId == ultimo_id_factura[0]).all()
+            DetalleFactura.subtotal
+            ).join(Stock, DetalleFactura.id_productos == Stock.id_producto) \
+            .filter(DetalleFactura.facturaId == ultimo_id_factura[0]).all()
+        # total_factura = session.query(Factura.total).filter(Factura.nro_factura == ultimo_id_factura[0]).first()
+
     else:
         prod = []
 
-    listar_detalle = [{
-        "nroDetalle": nro,
-        "factura": factura,
-        "producto": producto,
-        "cantidad": cantidad,
-        "subtotal": subtotal
-    } for nro, factura, producto, cantidad, subtotal in prod]
+    resultado = [
+    {
+        "nroDetalle": d.idDetalle,
+        "factura": d.facturaId,
+        "producto": d.nombre,   # este es el nombre del producto
+        "precio": d.precio_venta,
+        "cantidad": d.cantidad,
+        "subtotal": d.subtotal
+    } for d in prod
+]
 
-    return jsonify(listar_detalle)
+    return jsonify(resultado)

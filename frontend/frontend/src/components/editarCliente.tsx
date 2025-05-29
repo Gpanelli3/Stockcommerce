@@ -33,7 +33,7 @@ function EditClient() {
     fetch("http://127.0.0.1:5000/apimain/usuarios")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Clientes desde backend:", data); // <- MIRÁ ESTO
+        console.log("Clientes desde backend:", data);
         setClients(data);
       })
       .catch((error) => console.log("Error al cargar clientes:", error));

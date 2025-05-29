@@ -20,7 +20,7 @@ def borrar():
         producto=request.json["producto"]
 
 
-        session.execute(delete(DetalleFactura).where(DetalleFactura.id_productos == producto))
+        # session.execute(delete(DetalleFactura).where(DetalleFactura.id_productos == producto))
         session.execute(delete(Stock).where(Stock.id_producto == producto))
         session.commit()
 
