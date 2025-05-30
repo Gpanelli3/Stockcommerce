@@ -103,6 +103,10 @@ function EditClient() {
           Volver a Clientes
         </Link>
         <br />
+        <Link to="/verClientes" className="back-button">
+          Ver Clientes
+        </Link>
+        <br />
         <h2 className="registration-title">Editar Cliente</h2>
         <form className="registration-form" onSubmit={EditarCliente}>
           <div className="form-group">

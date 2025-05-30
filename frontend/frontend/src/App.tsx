@@ -18,6 +18,8 @@ import Facturas from "./components/facturas";
 import BorrarProducto from "./components/borrarProductos";
 import EditClient from "./components/editarCliente";
 import DetalleFacturas from "./components/detalleClientes";
+import ClienteList from "./components/verClientes";
+
 // import FacturaGenerada from "./components/mostrarDetalle";
 
 interface ClientFormData {
@@ -568,6 +570,10 @@ function ClientRegistration() {
           Editar Cliente
         </Link>
         <br />
+        <Link to="/verClientes" className="back-button">
+          Ver Clientes
+        </Link>
+        <br />
         <h2 className="registration-title">Registro de Cliente Nuevo</h2>
         <form className="registration-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -823,6 +829,7 @@ function App() {
       <Route path="/borrarProducto" element={<BorrarProducto />} />
       <Route path="/editarCliente" element={<EditClient />} />
       <Route path="/detalles" element={<DetalleFacturas />} />
+      <Route path="/verClientes" element={<ClienteList />} />
     </Routes>
   );
 }
