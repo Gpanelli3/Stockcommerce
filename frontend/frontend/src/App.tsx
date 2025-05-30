@@ -482,7 +482,11 @@ function HomePage() {
     </div>
   );
 }
-
+interface ClientCheck {
+  id: number;
+  dni: number;
+  nombre: string;
+}
 // registro cliente
 function ClientRegistration() {
   const [formData, setFormData] = useState<ClientFormData>({
@@ -491,10 +495,32 @@ function ClientRegistration() {
     phone: "",
   });
 
+  const [clients, setClients] = useState<ClientCheck[]>([]);
+
+  // Cargar clientes desde el backend al montar el componente
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/apimain/clientesEditar")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Clientes desde backend:", data);
+        setClients(data);
+      })
+      .catch((error) => console.log("Error al cargar clientes:", error));
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const clienteExistente = clients.find(
+      (cliente) => cliente.dni === Number(formData.dni)
+    );
+
+    if (clienteExistente) {
+      alert("Ese cliente ya existe");
+      return;
+    }
+
     try {
-      // Here you would add your endpoint URL
       const response = await fetch(
         "http://127.0.0.1:5000/apimain/registroCliente/",
         {
@@ -510,7 +536,6 @@ function ClientRegistration() {
         throw new Error("Error al registrar el cliente");
       }
 
-      // Reset form after successful submission
       setFormData({
         name: "",
         dni: "",
@@ -543,9 +568,6 @@ function ClientRegistration() {
           Editar Cliente
         </Link>
         <br />
-        <Link to="/eliminarCliente" className="back-button">
-          Eliminar Cliente
-        </Link>
         <h2 className="registration-title">Registro de Cliente Nuevo</h2>
         <form className="registration-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -800,7 +822,6 @@ function App() {
       <Route path="/facturas" element={<Facturas />} />
       <Route path="/borrarProducto" element={<BorrarProducto />} />
       <Route path="/editarCliente" element={<EditClient />} />
-      <Route path="/eliminarCliente" element={<Facturas />} />
       <Route path="/detalles" element={<DetalleFacturas />} />
     </Routes>
   );

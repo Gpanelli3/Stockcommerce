@@ -17,6 +17,7 @@ from controllers.editarCliente import editarCliente
 from controllers.buscador import buscador
 from controllers.catalogoProd import buscadorCatalogo
 from controllers.detalleClientes import detalle
+from controllers.clientesEditarRegistrar import clientesEditar
 
 
 apimain= Blueprint('apimain', __name__, url_prefix='/apimain')
@@ -38,6 +39,8 @@ apimain.register_blueprint(editarCliente)
 apimain.register_blueprint(buscador)
 apimain.register_blueprint(buscadorCatalogo)
 apimain.register_blueprint(detalle)
+apimain.register_blueprint(clientesEditar)
+
 
 
 

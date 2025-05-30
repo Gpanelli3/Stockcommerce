@@ -12,25 +12,26 @@ import {
 
 interface ClientFormData {
   name: string;
-  dni: string;
+  dni: number;
   phone: string;
 }
 interface Client {
   id: number;
   nombre: string;
-  dni: string;
+  dni: number;
   phone: string;
 }
 
 function EditClient() {
   const [formData, setFormData] = useState<ClientFormData>({
     name: "",
-    dni: "",
+    dni: 0,
     phone: "",
   });
   const [clients, setClients] = useState<Client[]>([]);
+
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/apimain/usuarios")
+    fetch("http://127.0.0.1:5000/apimain/clientesEditar")
       .then((res) => res.json())
       .then((data) => {
         console.log("Clientes desde backend:", data);
@@ -40,18 +41,31 @@ function EditClient() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "dni" ? Number(value) : value,
+    }));
   };
 
   const EditarCliente = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const clienteExistente = clients.find(
+      (cliente) => cliente.dni === formData.dni
+    );
+
+    if (!clienteExistente) {
+      alert("Cliente no encontrado o no está registrado");
+      return;
+    }
+
     try {
       const payload = {
         nombre: formData.name,
         dni: formData.dni,
         telefono: formData.phone,
       };
-      alert("cliente editado correctamente");
 
       const res = await fetch("http://127.0.0.1:5000/apimain/editarCliente/", {
         method: "POST",
@@ -63,15 +77,20 @@ function EditClient() {
       });
 
       if (!res.ok) throw new Error("Error al editar el producto");
+
       setFormData({
         name: "",
-        dni: "",
+        dni: 0,
         phone: "",
       });
+
+      alert("Cliente editado correctamente");
     } catch (error) {
       console.error("Error:", (error as Error).message);
+      alert("Error al editar el cliente");
     }
   };
+
   return (
     <div className="client-registration">
       <div className="registration-container">
@@ -84,9 +103,6 @@ function EditClient() {
           Volver a Clientes
         </Link>
         <br />
-        <Link to="/eliminarCliente" className="back-button">
-          Eliminar Cliente
-        </Link>
         <h2 className="registration-title">Editar Cliente</h2>
         <form className="registration-form" onSubmit={EditarCliente}>
           <div className="form-group">
@@ -103,7 +119,7 @@ function EditClient() {
           <div className="form-group">
             <label htmlFor="dni">DNI</label>
             <input
-              type="text"
+              type="number"
               id="dni"
               name="dni"
               value={formData.dni}
@@ -114,7 +130,7 @@ function EditClient() {
           <div className="form-group">
             <label htmlFor="phone">Teléfono</label>
             <input
-              type="tel"
+              type="number"
               id="phone"
               name="phone"
               value={formData.phone}

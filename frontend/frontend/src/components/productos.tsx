@@ -10,6 +10,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 interface ProductFormData {
+  id: number;
   name: string;
   supplier: string;
   category: string;
@@ -92,7 +93,7 @@ function CatalogPage() {
             <tbody>
               {products.map((product, index) => (
                 <tr key={index}>
-                  <td>{index + 1}</td>
+                  <td>{product.id}</td>
                   <td>{product.name}</td>
                   <td>{product.quantity}</td>
                   <td>${product.costPrice}</td>
